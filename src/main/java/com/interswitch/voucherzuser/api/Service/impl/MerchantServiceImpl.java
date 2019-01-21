@@ -42,7 +42,6 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public List<Merchant> findAllMerchants() {
-        System.out.println("Hitting the service");
         return merchantDao.findAll();
     }
 

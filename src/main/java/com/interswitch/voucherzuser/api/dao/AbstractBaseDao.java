@@ -52,14 +52,11 @@ public abstract class AbstractBaseDao<M extends BaseEntity > implements BaseDao<
     }
 
     public List<M> findAll(){
-
         Map<String, Object> map = findAll.execute();
         List<M> list = (List<M>)map.get(MULTIPLE_RESULT);
         if (list == null || list.isEmpty()){
-            System.out.println("The list is empty");
             return null;
         }
-
         return list;
 
     }
