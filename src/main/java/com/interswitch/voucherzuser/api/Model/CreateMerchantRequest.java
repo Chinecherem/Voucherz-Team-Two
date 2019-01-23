@@ -2,7 +2,6 @@ package com.interswitch.voucherzuser.api.Model;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.lang.model.element.Name;
 import javax.validation.constraints.NotBlank;
 
 public class CreateMerchantRequest extends LoginRequest{
@@ -21,7 +20,7 @@ public class CreateMerchantRequest extends LoginRequest{
         @NotBlank(message = "Required")
         private int companySize;
 
-        private boolean enabled;
+        private boolean isEnabled;
 
         public String getFirstname() {
             return firstname;
@@ -56,11 +55,11 @@ public class CreateMerchantRequest extends LoginRequest{
         }
 
         public boolean isEnabled() {
-            return enabled;
+            return isEnabled;
         }
 
         public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
+            this.isEnabled = enabled;
         }
 
         @Override
@@ -70,7 +69,7 @@ public class CreateMerchantRequest extends LoginRequest{
                     ", lastname='" + lastname + '\'' +
                     ", mobileNo='" + mobileNo + '\'' +
                     ", companySize=" + companySize +
-                    ", enabled=" + enabled +
+                    ", isEnabled=" + isEnabled +
                     '}';
         }
     }

@@ -33,8 +33,10 @@ public class MerchantDaoImpl extends AbstractBaseDao<Merchant> implements Mercha
         findAll = new SimpleJdbcCall(jdbcTemplate).withProcedureName("usp_findAllMerchant").returningResultSet(MULTIPLE_RESULT, new BeanPropertyRowMapper<>(Merchant.class));
 
 
+        BeanPropertyRowMapper<Merchant> rowMapper = new BeanPropertyRowMapper<>(Merchant.class);
+        rowMapper.setPrimitivesDefaultedForNullValue(true);
         findByEmail = new SimpleJdbcCall(jdbcTemplate).withProcedureName("usp_findMerchantByEmail")
-                .returningResultSet(SINGLE_RESULT, new BeanPropertyRowMapper<>(Merchant.class));
+                .returningResultSet(SINGLE_RESULT, rowMapper);
     }
 
     @Override
