@@ -1,4 +1,4 @@
-Technologies Used
+Technologies Used:
 MSSQL: For Database Management
 .Net Core: Used for the development of Audit Trail service, Redemption Service, Session Management Service
 SpringBoot: Used to develop the User Management Service, Voucher Management Service
