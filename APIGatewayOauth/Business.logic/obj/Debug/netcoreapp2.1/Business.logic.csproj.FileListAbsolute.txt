@@ -1,0 +1,16 @@
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Business.logic.deps.json
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Business.logic.dll
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\obj\Debug\netcoreapp2.1\Business.logic.csprojAssemblyReference.cache
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\obj\Debug\netcoreapp2.1\Business.logic.csproj.CoreCompileInputs.cache
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\obj\Debug\netcoreapp2.1\Business.logic.AssemblyInfoInputs.cache
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\obj\Debug\netcoreapp2.1\Business.logic.AssemblyInfo.cs
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Business.logic.pdb
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Options.dll
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Options.xml
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\obj\Debug\netcoreapp2.1\Business.logic.csproj.CopyComplete
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\obj\Debug\netcoreapp2.1\Business.logic.dll
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\obj\Debug\netcoreapp2.1\Business.logic.pdb
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\DIADEM\source\repos\voucherz.auditTrails\Business.logic\bin\Debug\netcoreapp2.1\Microsoft.Extensions.DependencyInjection.Abstractions.xml

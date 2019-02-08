@@ -1,0 +1,14 @@
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\bin\Debug\netcoreapp2.1\APIGatewayOauth.deps.json
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\bin\Debug\netcoreapp2.1\APIGatewayOauth.runtimeconfig.json
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\bin\Debug\netcoreapp2.1\APIGatewayOauth.runtimeconfig.dev.json
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\bin\Debug\netcoreapp2.1\APIGatewayOauth.dll
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.csprojAssemblyReference.cache
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.csproj.CoreCompileInputs.cache
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.RazorAssemblyInfo.cache
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.RazorAssemblyInfo.cs
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.AssemblyInfoInputs.cache
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.AssemblyInfo.cs
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.RazorTargetAssemblyInfo.cache
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\bin\Debug\netcoreapp2.1\APIGatewayOauth.pdb
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.dll
+C:\Users\DIADEM\source\repos\APIGatewayOauth\APIGatewayOauth\obj\Debug\netcoreapp2.1\APIGatewayOauth.pdb
