@@ -5,8 +5,19 @@ import {
 } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
 import {withRouter} from 'react-router-dom';
+import {FormGroup,  Label, Input} from 'reactstrap';
+import Loading from "../../containers/VoucherLoader"
 
+const colors = [ { color: 'Red', value: 'ff0000' },
+  { color: 'Green', value: '00ff00' },
+  { color: 'Blue', value: '0000ff' } ]
 
+  const style={
+    error:{
+      textAlign: "center",
+      color: "red"
+    }
+  }
 
 class SignUpForm extends React.Component {
 
@@ -17,9 +28,12 @@ class SignUpForm extends React.Component {
     email: "",
     password: "",
     mobileNo: "",
+    role: "",
     confirmPassword: ""
    },
-   confirm: false
+   confirm: false,
+   isLoading: false,
+   isError : false
   }
   
   changeHandler = (e) =>{
@@ -38,26 +52,28 @@ class SignUpForm extends React.Component {
 
   FormHandleSubmit =(e) =>{
     e.preventDefault();
+    this.setState({isLoading: true})
     let userData = this.state.newUser
-    
-    console.log("HELLO WORLD, PLS LOG SUCCESSFULLY")
-    fetch("http://172.20.20.107:8083/api/user-management-service/register",{
+    console.log(userData)
+    fetch("http://172.20.20.107:8080/register",{
         method: "POST",
         body: JSON.stringify(userData),
         headers:{
             'Accept':  "application/json",
             'Content-Type': "application/json"
         },
-    }).then(res => {
-      res.json()
-      console.log(res)
-    }).then(response =>{
-      console.log(response)
-       // if(response.code === "202"){
+    }).then(response => response.json())
+      .then(body =>{
+        console.log(body)
+        this.setState({isLoading: false})
+        if(body.code === "201"){
           this.props.history.push("/confirmationPage")
-      // }
-    })
-      .catch(error =>console.error(error))
+          this.setState({isLoading : false})
+        }else{
+        this.setState({isLoading: false, isError: true})
+        }
+      })
+  
   }
 
 
@@ -65,10 +81,12 @@ class SignUpForm extends React.Component {
    
     return (
       <div>
+        {this.state.isLoading ? <Loading /> : null}
+        {this.state.isError ? <p style={style.error}>Registration failed, Pls checl your fields again</p> : null}
         <Form onSubmit={this.FormHandleSubmit}>    
           <div className='form-group'>
             <Field 
-              value={this.state.firstname}
+              value={this.state.newUser.firstname}
               onChange={this.changeHandler}
               label='First Name'
               placeholder='John'
@@ -82,7 +100,7 @@ class SignUpForm extends React.Component {
               label='Last Name'
               placeholder='Doe'
               name='lastname'
-              value={this.state.lastname}
+              value={this.state.newUser.lastname}
               onChange={this.changeHandler}
               type='text'
               component={renderField}
@@ -93,17 +111,31 @@ class SignUpForm extends React.Component {
               label='Email'
               placeholder='john@doe.com'
               name='email'
-              value={this.state.email}
+              value={this.state.newUser.email}
               onChange={this.changeHandler}
               type='email'
               component={renderField}
             />
           </div>
           <div className='form-group'>
+            <FormGroup>
+              <Label size="lg">Role</Label>
+             <Input 
+                type="select"
+                name="role"
+                value={this.state.newUser.role}
+                onChange={this.changeHandler}>
+                <option value="">Choose...</option>
+                <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                <option value="ROLE_USER"> ROLE_USER</option>
+              </Input>
+            </FormGroup>
+          </div>
+          <div className='form-group'>
             <Field
               label='Phone Number'
               name='mobileNo'
-              value={this.state.mobileNo}
+              value={this.state.newUser.mobileNo}
               onChange={this.changeHandler}
               type='text'
               component={renderField}
@@ -115,7 +147,7 @@ class SignUpForm extends React.Component {
               placeholder='*********'
               name='password'
               type='password'
-              value={this.state.password}
+              value={this.state.newUser.password}
               onChange={ this.changeHandler}
               component={renderField}
             />
@@ -126,7 +158,7 @@ class SignUpForm extends React.Component {
               placeholder='*********'
               name='confirmPassword'
               type='password'
-              value={this.state.confirmPassword}
+              value={this.state.newUser.confirmPassword}
               onChange={ this.changeHandler}
               component={renderField}
             />
@@ -178,13 +210,23 @@ const validate = values => {
   return errors;
 }
 
-const renderField = ({ input, label, type, placeholder, meta: { touched, error } }) => (
+const renderField  = ({ input, label, type, placeholder, meta: { touched, error } }) => (
   <div>
     <label>{label}</label>
     <input {...input} type={type} placeholder={placeholder}/>
     {touched && (error && <p className='error'>{error}</p>)}
   </div>
 )
+
+// const dropdownrole  = ({ input,  label, type, placeholder, meta: { touched, error } }) => (
+//   <div>
+//     <label>{label}</label>
+//     <select {...input}   type={type} placeholder={placeholder} data={colors}>
+//     </select>
+//     {touched && (error && <p className='error'>{error}</p>)}
+//   </div>
+// )
+
 
 SignUpForm = reduxForm({
   form: 'SignUpForm',

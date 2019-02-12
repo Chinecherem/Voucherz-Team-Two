@@ -9,10 +9,10 @@ import ConfirmationPage from "../components/Auth/ConfirmationPage"
 import ChangePassword from '../components/Auth/ChangePassword';
 import ConfirmAccount  from "../components/Auth/ConfirmAccount";
 import AdminDashboard from "./Admindashboard/AdminDashboard";
-// import {token} from "../components/AccessToken"
+
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const auth =  localStorage.getItem('token') ? true : false;
+   const auth = (localStorage.getItem('token')) ? true : false;
   return (
     <Route
       {...rest}
@@ -37,7 +37,24 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
 
 class App extends React.Component {
+    state={
+      loggedIn: false
+    }
 
+
+  componentWillMount(){
+    let admin = localStorage.getItem("admin")
+    let merchant = localStorage.getItem("token")
+    if(merchant !== null){
+      this.props.history.push("/merchant")
+    }
+    else if(admin !== null){
+      this.props.history.push("/admin")
+    }
+    else if(admin === null && merchant === null){
+      this.props.history.push("signIn")
+    }
+  }
 
   render()  {
       return (
@@ -48,8 +65,8 @@ class App extends React.Component {
           <Route  path="/confirmationPage" component={ConfirmationPage} />
           <Route    path="/passwordChange" component={ChangePassword} />
           <Route  path="/confirmAccount" component={ConfirmAccount} />
-          <ProtectedRoute  path="/merchant/" component={Dashboard} />
-          <PrivateRoute    path="/admin" component={AdminDashboard} />
+          <ProtectedRoute   path="/merchant" component={Dashboard} />
+          <PrivateRoute  path="/admin" component={AdminDashboard} />
         </Switch>
       )
     }

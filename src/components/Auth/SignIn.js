@@ -5,7 +5,6 @@ import {
   Divider
 } from 'semantic-ui-react';
 
-// import { signIn } from '../../actions';
 import {Link} from "react-router-dom";
 
 import NavBar from '../NavBar';
@@ -56,7 +55,7 @@ class SignIn extends React.Component {
               {this.renderError()}
               <SignInForm onSubmit={this.onSubmit} />
               <Link to="/signUp" className="ui button btnCommon btnPrimary" style={style.b}>Register</Link>
-              <Link to="/passwordChange" className="ui button btnCommon btnPrimary" style={style.b}>Forgot Password?</Link>
+              {/* <Link to="/passwordChange" className=" btnCommon btnPrimary" style={style.b}>Forgot Password?</Link> */}
             </Card>
           </div>
         </div>     

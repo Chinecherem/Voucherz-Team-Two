@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router-dom'
-// import { signOut } from '../actions';
-
-// import auth from '../components/Auth/RequireAuth'
 
 class AccountMenu extends React.Component {
 
   signoutHandler =() => {
       localStorage.removeItem('token')
+      localStorage.removeItem('email')
+      localStorage.removeItem("admin")
       this.props.history.push("/")
   }
 

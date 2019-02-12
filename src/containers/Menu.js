@@ -1,7 +1,6 @@
 import React from 'react';
 
 import MenuItem from '../components/MenuItem';
-import {token} from '../components/AccessToken'
 
 
 class Menu extends React.Component {
@@ -15,10 +14,11 @@ class Menu extends React.Component {
           <h2 className='title'>Voucherz</h2>
         </div>
         <ul>
-          <MenuItem link={`/merchant/${token}`} linkText='Dashboard' iconName='tachometer' />
-          <MenuItem link={`/merchant/profile/${token}`} linkText='Profile' iconName='cog' />
-          <MenuItem link={`/merchant/voucher/${token}`} linkText='Voucher' iconName='shopping-cart' />
-          <MenuItem link={`/merchant/redemption/${token}`} linkText='Redemption' iconName='list' />
+          <MenuItem link="/merchant/" linkText='Dashboard' iconName='tachometer' />
+          <MenuItem link="/merchant/createvoucher" linkText="Create Voucher" iconName="plus" />
+          <MenuItem link="/merchant/profile" linkText='Profile' iconName='user' />
+          <MenuItem link="/merchant/voucher" linkText='Voucher' iconName='gift' />
+          <MenuItem link="/merchant/redemption" linkText='Redemption' iconName='list' />
         </ul> 
       </div>
       
@@ -26,4 +26,4 @@ class Menu extends React.Component {
   }
 }
 
-export default Menu;
+export default Menu; 

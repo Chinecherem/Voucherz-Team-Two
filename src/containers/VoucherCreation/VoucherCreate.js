@@ -1,12 +1,9 @@
 import React from "react";
 import {PanelGroup, Panel} from 'react-bootstrap';
-// import {Segment} from 'semantic-ui-react'
 import ValueVoucher from './VoucherComponent/ValueVoucher';
 import DiscountVoucher from './VoucherComponent/DiscountVoucher';
 import GiftVoucher from './VoucherComponent/GiftVoucher';
-import CreateIcon from "./CreateIcon"
 import AppHeader from '../.././components/AppHeader';
-// import Loader from './VoucherComponent/Button'
 
 
 const style = {
@@ -26,7 +23,6 @@ class VoucherCreation extends React.Component{
         <div>
           <AppHeader />
             <div className='mainContainer' >
-            <CreateIcon />
             <PanelGroup accordion id="vouchercreation">
                 <Panel eventKey="1">
                      <Panel.Heading >

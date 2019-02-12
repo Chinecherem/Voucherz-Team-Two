@@ -20,7 +20,8 @@ const style={
       borderRadius: "20px !important"
     }
 }
-
+const name = localStorage.getItem('email')
+// const token = localStorage.getItem("email")
 
 const Profile = () =>
   <div className='profileContainer'>
@@ -34,8 +35,8 @@ const Profile = () =>
         </div>
         <Form style={style.form}>
           <Form.Input fluid label='Name' placeholder='Dabiri Mayowa' readOnly style={style.formInput}/>
-          <Form.Input fluid label='Email Address' placeholder='mayowad43@gmail.com' type="email" readOnly />
-          <Form.Input fluid label="Account Owner" placeholder="mayowad43@gmail.com"  readOnly/>
+          <Form.Input fluid label='Email Address' placeholder={name} type="email" readOnly />
+          <Form.Input fluid label="Account Owner" placeholder={name} readOnly/>
       </Form>
     </div>
   </div>;

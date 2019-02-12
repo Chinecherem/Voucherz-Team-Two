@@ -6,7 +6,7 @@ import {
 import { Field, reduxForm } from 'redux-form';
 // import auth from "./RequireAuth";
 import { withRouter} from 'react-router-dom';
-import {token} from "../AccessToken"
+import Loading from "../../containers/VoucherLoader"
 
 const style={
   error:{
@@ -24,7 +24,8 @@ class SignInForm extends React.Component {
         email: "",
         password: ""
       },
-      iserror: false      
+      iserror: false,
+      isLoading: false    
     }
   }
 
@@ -45,7 +46,8 @@ class SignInForm extends React.Component {
 
 formHandler = () =>{
   let userData = this.state.newUser
-  fetch("http://172.20.20.107:8080/login",{
+  this.setState({isLoading: true})
+  fetch("http://172.20.20.107:8083/api/user-management-service/login",{
       method: "POST",
       body: JSON.stringify(userData),
       headers:{
@@ -54,27 +56,32 @@ formHandler = () =>{
       },
   }).then(response => response.json())
   .then(body =>{
-    console.log("this is body", body.response.token, body.merchant.email, body.merchant.role)
+    console.log(body)
     if(body.code === "202"){
+      this.setState({isLoading: false})
         if(body.merchant.role === 'ROLE_USER'){
-          localStorage.setItem("token", body.response.token)
-          this.props.history.push(`/merchant/${token}`);
-        } else if (body.role === 'ROLE_ADMIN'){
+          localStorage.setItem('token', body.response.token)
+          localStorage.setItem('email', body.merchant.email)
+          this.props.history.push('/merchant');
+        } else if (body.merchant.role === 'ROLE_ADMIN'){
+            console.log(body.merchant.role)
+          localStorage.setItem('email', body.merchant.email)
           localStorage.setItem("admin", body.response.token)
           this.props.history.push("/admin")
-          // localStorage.setItem("admin", body.session)
         }
         console.log(body)
     } else{
-        this.setState({iserror: true})
+        this.setState({iserror: true, isLoading: false})
     }
-  } )
-  .catch(error => console.error(error));
+  })
+  .catch(error => console.log(error));
 }
 
   render() {
     return (
+     
       <div>
+         {this.state.isLoading ? <Loading /> : null }
         {this.state.iserror ? <p style={style.error}>Invalid email or password</p>: null}
         <Form>    
           <div className='form-group'>
@@ -101,6 +108,7 @@ formHandler = () =>{
           </div>
 
           <Button
+          disabled={this.state.newUser.email !== "" && this.state.newUser.password !== "" ? false : true}
            onClick={this.formHandler}
             className='btnCommon btnPrimary'
             type='submit'

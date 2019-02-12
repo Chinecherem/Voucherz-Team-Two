@@ -25,7 +25,7 @@ class AuditTrail extends React.Component{
       .then(res => {
         const trail = res.data;
         this.setState({ trail: trail});
-        console.log(this.state.trail)
+        // console.log(this.state.trail)
       })
   }
 

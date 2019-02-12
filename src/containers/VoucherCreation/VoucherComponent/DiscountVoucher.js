@@ -3,7 +3,7 @@ import { Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import FormLoader from '../Loading'
 import { Segment } from 'semantic-ui-react';
 import {withRouter} from "react-router-dom"
-import {token} from "../../../components/AccessToken"
+// import {token} from "../../../components/AccessToken"
 
 
 const style={
@@ -37,7 +37,7 @@ class DiscountVoucher extends React.Component{
             newUser:{
                 voucherType: "Discount",
                 category: '',
-                startDate: "",
+                startDate: '',
                 expiryDate: "",
                 charSet: "",
                 length: "",
@@ -52,7 +52,8 @@ class DiscountVoucher extends React.Component{
                 codeValue: ""
             },
             isLoading: true,
-            isError: false
+            isError: false,
+            token: localStorage.getItem("token")
         }
     }
 
@@ -82,8 +83,7 @@ class DiscountVoucher extends React.Component{
     const value= e.target.value;
     const name= e.target.name;
        const regex = /^[a-z]+$/i;
-       if(regex.test(e.target.value) || value === ""  || this.state.newUser.prefix.length 
-       <= 3 || this.state.newUser.suffix.length <= 3){
+       if((regex.test(value) || value === "")  && value.length  <= 3){
            this.setState(
                 prevState =>({
                     newUser: {
@@ -125,24 +125,42 @@ class DiscountVoucher extends React.Component{
             })
         )
     }
+    // valueChangeHandler = () =>{
+    //     const value= this.state.amount || this.st;
+    //     const name= e.target.name;
+    //     this.setState(
+    //         prevState =>({
+    //             newUser: {
+    //                 ...prevState.newUser,
+    //                 [name]: value
+    //             }
+    //         })
+    //     )
+    // }
 
     isEnabled =() =>{
-            if(this.state.newUser.category !== "" && this.state.newUser.startdate !== "" && this.state.newUser.expiryDate !== ""
-             && this.state.newUser.charset !== "" && this.state.newUser.length !== "" && this.state.newUser.NumOfCode !== "" 
-            && this.state.newUser.discountType !=="" && this.state.newUser.codeValue !== "" && ( this.state.newUser.amount !== "" || this.state.newUser.percentage !== "" 
-            || this.state.newUser.unit !== "")){
+            if(this.state.newUser.category !== "" && this.state.newUser.startDate !== "" && this.state.newUser.expiryDate !== ""
+             && this.state.newUser.charSet !== "" && this.state.newUser.length !== "" && this.state.newUser.numOfCode !== "" 
+            && this.state.newUser.discountType !=="" && this.state.newUser.codeValue !== "" && ( this.state.newUser.amount !== "" 
+            || this.state.newUser.percentage !== ""  || this.state.newUser.unit !== "")){
                return(false)
             }else{
                 return(true) 
         }
     }
+
+    // componentWillMount(){
+    //     let token = localStorage.getItem("token");
+    //     this.setState({token})
+    //     console.log(this.state.token)
+    // }
     
     handleFormSubmit = (e) =>{
         e.preventDefault()
         let userData = this.state.newUser
         console.log(userData)
         this.setState({isLoading: false})
-                fetch(`http://172.20.20.107:8083/api/voucher-management-service/create/${token}`, {
+                  fetch(`http://172.20.20.107:8083/api/voucher-management-service/create/${this.state.token}`, {
                     method: "POST",
                     body: JSON.stringify(userData),
                     headers:{   
@@ -155,7 +173,7 @@ class DiscountVoucher extends React.Component{
                         this.setState({isLoading: true})
                         console.log(res.status)                    
                         console.log("Successfully Submitted")
-                        this.props.history.push(`/merchant/voucher/${token}`)
+                        this.props.history.push(`/merchant/voucher`)
                         this.setState({
                             newUser:{
                                 voucherType: "Value",
@@ -178,7 +196,7 @@ class DiscountVoucher extends React.Component{
                       
                 })
                 .catch(error =>{
-                    console.error('Error:', error || 'Problem tryin to upload')
+                    this.setState({isError: true})
                     
                 } );                
            }
@@ -194,236 +212,238 @@ class DiscountVoucher extends React.Component{
         // }
 
     render(){
-
-        return(
-            <div>  
-             <Segment>        
-                {this.state.isLoading ? null : <FormLoader />}
-                {this.state.error ? <p>Error Submission failed</p> : null}
-                <Form style={style.form}  onSubmit={this.handleFormSubmit}>
-                    <FormGroup>
-                        <Label size="lg" for="category">Select Category</Label>
-                        <Input
-                           required
-                            bsSize="lg"
-                            id="category"
-                            type="select"
-                            name="category"
-                            value={this.state.newUser.category}
-                            onChange={this.stringChangeHandler}>
-                            <option style={style.options} value="select">Choose...</option>
-                            <option style={style.options} value="New Customer">New Customer</option>
-                            <option style={style.options} value="Old Customer"> Old Customer</option>
-                        </Input>
-                    </FormGroup> 
-                    <Row form>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label size="lg">Start Date</Label>
+        if(this.state.isError){
+            return(
+                <h1>Error Creating Vouchers</h1>
+            )
+        }else{
+            return(
+                <div>  
+                 <Segment>        
+                    {this.state.isLoading ? null : <FormLoader />}
+                    <Form style={style.form}  onSubmit={this.handleFormSubmit}>
+                        <FormGroup>
+                            <Label size="lg" for="category">Category</Label>
+                            <Input
+                               required
+                                bsSize="lg"
+                                id="category"
+                                type="text"
+                                name="category"
+                                value={this.state.newUser.category}
+                                onChange={this.stringChangeHandler} />
+                        </FormGroup> 
+                        <Row form>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label size="lg">Start Date</Label>
+                                        <Input
+                                        required
+                                        style={style.input}
+                                        bsSize="lg" 
+                                        type="date" 
+                                        name="startDate"
+                                        value={this.state.newUser.startDate}
+                                        onChange={this.stringChangeHandler}/> 
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label size="lg">Expiry Date</Label>
                                     <Input
                                     required
                                     style={style.input}
-                                    bsSize="lg" 
-                                    type="date" 
-                                    name="startDate"
-                                    value={this.state.newUser.startDate}
+                                    bsSize="lg"
+                                    type="date"
+                                    name="expiryDate"
+                                    value={this.state.newUser.expiryDate}
                                     onChange={this.stringChangeHandler}/> 
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label size="lg">Expiry Date</Label>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col md={6}>
+                                <FormGroup>
+                                <Label size="lg">Prefix</Label>
                                 <Input
                                 required
-                                style={style.input}
-                                bsSize="lg"
-                                type="date"
-                                name="expiryDate"
-                                value={this.state.newUser.expiryDate}
-                                onChange={this.stringChangeHandler}/> 
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row form>
-                        <Col md={6}>
-                            <FormGroup>
-                            <Label size="lg">Prefix</Label>
-                            <Input
-                            required
-                              style={style.input}
-                                bsSize="lg"
-                                type="text" 
-                                name="prefix"
-                                placeholder="enter prefix" 
-                                value={this.state.newUser.prefix}
-                                onChange={this.prefixSuffixHandler}/>
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label size="lg">Suffix</Label>
-                                <Input
-                                    required
-                                    style={style.input}
-                                    bsSize="lg" 
+                                  style={style.input}
+                                    bsSize="lg"
                                     type="text" 
-                                    name="suffix"
-                                    placeholder="enter prefix"
-                                    value={this.state.newUser.suffix}
+                                    name="prefix"
+                                    placeholder="enter prefix" 
+                                    value={this.state.newUser.prefix}
                                     onChange={this.prefixSuffixHandler}/>
-                        </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row form>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label size="lg">Voucher Length</Label>
-                                 <Input
-                                      required
-                                    style={style.input}
-                                    bsSize="lg" 
-                                    type="text" 
-                                    name="length" 
-                                    value={this.state.newUser.length}
-                                    onChange={this.numberChangehandler}/> 
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label size="lg">No. of Vouchers</Label>
-                                <Input
-                                    required
-                                    style={style.input}
-                                    bsSize="lg" 
-                                    type="text"
-                                    name="numOfCode"
-                                    value={this.state.newUser.numOfCode}
-                                    onChange={this.numberChangehandler}/>
-                        </FormGroup>
-                        </Col>
-                    </Row>      
-                    <Row form>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label size="lg">Charset</Label>
-                                <Input
-                                    required
-                                    style={style.input}
-                                    bsSize="lg"
-                                    type="select"
-                                    name="charSet"
-                                    value={this.state.newUser.charSet}
-                                    onChange={this.stringChangeHandler}>
-                                <option value="select">Choose...</option>
-                                <option value="Integer">Integer</option>
-                                <option value="Alphanumeric"> Alphanumeric</option>
-                                <option value="Alphabet">Alphabet</option>
-                            </Input>
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <Label size="lg"> Discount Type</Label>
-                                <Input
-                                  required
-                                    style={style.input}
-                                    bsSize="lg"
-                                    type="select"
-                                    name="discountType"
-                                    value={this.state.newUser.discountType}
-                                    onChange={this.stringChangeHandler}>
-                                        <option>Choose...</option>    
-                                        <option value="Amount">Amount </option>
-                                        <option value="Percentage">Percentage</option>
-                                        <option value="Unit">Unit</option>
-                            </Input>
-                            </FormGroup>
-                        </Col>
-                    </Row>    
-                    <Row form>
-                        <Col md={4}>
-                            <FormGroup>
-                                <Label size="lg">Amount</Label>
-                                <Input 
-                                required
-                                style={style.input}
-                                    bsSize="lg"
-                                    disabled={this.state.newUser.discountType !== "Amount" ? true : false}
-                                    type="text"
-                                    name="amount"
-                                    placeholder="#21"
-                                    value={this.state.newUser.amount}
-                                    onChange={this.numberChangehandler}/>
-                            </FormGroup>
-                        </Col>
-                        <Col md={4}>
-                            <FormGroup>
-                                <Label size="lg">Percentage</Label>
-                                <Input 
-                                required
-                                style={style.input}
-                                    bsSize="lg"
-                                    disabled={this.state.newUser.discountType !== "Percentage" ? true : false}
-                                    type="text"
-                                    name="percentage"
-                                    placeholder="21"
-                                    value={this.state.newUser.percentage}
-                                    onChange={this.percentageHandler}/>
-                            </FormGroup>
-                        </Col>
-                        <Col md={4}>
-                            <FormGroup>
-                                <Label size="lg">Unit</Label>
-                                <Input
-                                required
-                                style={style.input}
-                                    bsSize="lg"
-                                    disabled ={this.state.newUser.discountType !== "Unit" ? true : false} 
-                                    type="text"
-                                    name="unit"
-                                    placeholder="2000"
-                                    value={this.state.newUser.unit}
-                                    onChange={this.numberChangehandler}/>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row form>
-                         <Col md={6}>
-                             <FormGroup>
-                                   <Label size="lg">Value</Label>
-                                   <Input
-                                   required
-                                    bsSize="lg"
-                                    type="text"
-                                    name="codeValue"
-                                    placeholder="hu"
-                                    value={this.state.newUser.codeValue}
-                                    onChange={this.stringChangeHandler}/>
-                               </FormGroup>
+                                </FormGroup>
                             </Col>
                             <Col md={6}>
-                               <FormGroup>
-                                   <Label size="lg">Additional Info</Label>
-                                    <Input 
+                                <FormGroup>
+                                    <Label size="lg">Suffix</Label>
+                                    <Input
                                         required
+                                        style={style.input}
+                                        bsSize="lg" 
+                                        type="text" 
+                                        name="suffix"
+                                        placeholder="enter prefix"
+                                        value={this.state.newUser.suffix}
+                                        onChange={this.prefixSuffixHandler}/>
+                            </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label size="lg">Voucher Length</Label>
+                                     <Input
+                                          required
+                                        style={style.input}
+                                        bsSize="lg" 
+                                        type="text" 
+                                        name="length" 
+                                        value={this.state.newUser.length}
+                                        onChange={this.numberChangehandler}/> 
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label size="lg">No. of Vouchers</Label>
+                                    <Input
+                                        required
+                                        style={style.input}
+                                        bsSize="lg" 
+                                        type="text"
+                                        name="numOfCode"
+                                        value={this.state.newUser.numOfCode}
+                                        onChange={this.numberChangehandler}/>
+                            </FormGroup>
+                            </Col>
+                        </Row>      
+                        <Row form>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label size="lg">Charset</Label>
+                                    <Input
+                                        required
+                                        style={style.input}
                                         bsSize="lg"
-                                        type="textarea" 
-                                        name="additionalInfo"
-                                        value={this.state.newUser.additionalInfo}
-                                        onChange={this.stringChangeHandler} 
-                                         id="exampleText" />
-                               </FormGroup>
-                           </Col>
-                    </Row>
-                <Button 
-                disabled={this.isEnabled() }
-                    color="primary" 
-                    type="submit" 
-                    size="lg" style={style.button}>Submit</Button>
-                </Form>
-            </Segment>
-          </div>
-        )
+                                        type="select"
+                                        name="charSet"
+                                        value={this.state.newUser.charSet}
+                                        onChange={this.stringChangeHandler}>
+                                    <option value="select">Choose...</option>
+                                    <option value="Integer">Integer</option>
+                                    <option value="Alphanumeric"> Alphanumeric</option>
+                                    <option value="Alphabet">Alphabet</option>
+                                </Input>
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label size="lg"> Discount Type</Label>
+                                    <Input
+                                      required
+                                        style={style.input}
+                                        bsSize="lg"
+                                        type="select"
+                                        name="discountType"
+                                        value={this.state.newUser.discountType}
+                                        onChange={this.stringChangeHandler}>
+                                            <option>Choose...</option>    
+                                            <option value="Amount">Amount </option>
+                                            <option value="Percentage">Percentage</option>
+                                            <option value="Unit">Unit</option>
+                                </Input>
+                                </FormGroup>
+                            </Col>
+                        </Row>    
+                        <Row form>
+                            <Col md={4}>
+                                <FormGroup>
+                                    <Label size="lg">Amount</Label>
+                                    <Input 
+                                    required
+                                    style={style.input}
+                                        bsSize="lg"
+                                        disabled={this.state.newUser.discountType !== "Amount" ? true : false}
+                                        type="text"
+                                        name="amount"
+                                        placeholder="#21"
+                                        value={this.state.newUser.amount}
+                                        onChange={this.numberChangehandler}/>
+                                </FormGroup>
+                            </Col>
+                            <Col md={4}>
+                                <FormGroup>
+                                    <Label size="lg">Percentage</Label>
+                                    <Input 
+                                    required
+                                    style={style.input}
+                                        bsSize="lg"
+                                        disabled={this.state.newUser.discountType !== "Percentage" ? true : false}
+                                        type="text"
+                                        name="percentage"
+                                        placeholder="21"
+                                        value={this.state.newUser.percentage}
+                                        onChange={this.percentageHandler}/>
+                                </FormGroup>
+                            </Col>
+                            <Col md={4}>
+                                <FormGroup>
+                                    <Label size="lg">Unit</Label>
+                                    <Input
+                                    required
+                                    style={style.input}
+                                        bsSize="lg"
+                                        disabled ={this.state.newUser.discountType !== "Unit" ? true : false} 
+                                        type="text"
+                                        name="unit"
+                                        placeholder="2000"
+                                        value={this.state.newUser.unit}
+                                        onChange={this.stringChangeHandler}/>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row form>
+                             <Col md={6}>
+                                 <FormGroup>
+                                       <Label size="lg">Value</Label>
+                                       <Input
+                                       required
+                                        bsSize="lg"
+                                        type="text"
+                                        name="codeValue"
+                                        placeholder="hu"
+                                        value={this.state.newUser.codeValue}
+                                        onChange={this.stringChangeHandler}/>
+                                   </FormGroup>
+                                </Col>
+                                <Col md={6}>
+                                   <FormGroup>
+                                       <Label size="lg">Additional Info</Label>
+                                        <Input 
+                                            required
+                                            bsSize="lg"
+                                            type="textarea" 
+                                            name="additionalInfo"
+                                            value={this.state.newUser.additionalInfo}
+                                            onChange={this.stringChangeHandler} 
+                                             id="exampleText" />
+                                   </FormGroup>
+                               </Col>
+                        </Row>
+                    <Button 
+                    disabled={this.isEnabled() }
+                        color="primary" 
+                        type="submit" 
+                        size="lg" style={style.button}>Submit</Button>
+                    </Form>
+                </Segment>
+              </div>
+            )
+        }
+
+       
     }
 }
 

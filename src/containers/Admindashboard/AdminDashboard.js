@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Menu from './Menu'
+import Menu from './AdminMenu'
 import Auditory from './Audittrails';
 import RedemptionMgt from './RedemptionMgt';
 import SessionMgt from './SessionMgt';

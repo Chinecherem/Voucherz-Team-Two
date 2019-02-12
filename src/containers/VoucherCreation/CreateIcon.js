@@ -1,28 +1,28 @@
-import React from "react";
-import {Link} from "react-router-dom";
-import {Menu} from "semantic-ui-react"
+// import React from "react";
+// import {Link} from "react-router-dom";
+// import {Menu} from "semantic-ui-react"
 
 
-class CreateIcon extends React.Component{
+// class CreateIcon extends React.Component{
 
-  state={
-    key: ""
-  }
+//   state={
+//     key: ""
+//   }
 
-  componentWillMount(){
-    let key =localStorage.getItem("token")
-    this.setState({key: key})
-  }
+//   // componentWillMount(){
+//   //   let key =localStorage.getItem("token")
+//   //   this.setState({key: key})
+//   // }
 
-    render(){
-      return(
-        <Menu>
-        <Menu.Item position="right">
-          <Link to={`/merchant/createvoucher/${this.state.key}`}> <h1>CREATE VOUCHER</h1></Link>
-        </Menu.Item>
-      </Menu>
-      )
-    }
-}
+//     render(){
+//       return(
+//         <Menu>
+//         <Menu.Item position="right">
+//           <Link to="/merchant/createvoucher"> <h1>CREATE VOUCHER</h1></Link>
+//         </Menu.Item>
+//       </Menu>
+//       )
+//     }
+// }
 
-export default CreateIcon;
+// export default CreateIcon;

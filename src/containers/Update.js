@@ -1,8 +1,6 @@
 import React from 'react';
 import {Modal, Button, ButtonToolbar} from "react-bootstrap";
 import {Form, Label, Input, FormGroup, Button as CloseButton, ButtonGroup} from 'reactstrap';
-// import {Redirect} from 'react-router-dom';
-// import Voucher from './Voucher'
 
 
 const style = {
@@ -24,7 +22,7 @@ class Details extends React.Component {
             voucherType: this.props.voucherType,
             category: this.props.category,
             startDate: "",
-            expiryDate: "",
+            expiryDate:"",
             charSet: this.props.charSet,
             length: this.props.length,
             prefix: this.props.prefix,
@@ -57,7 +55,6 @@ class Details extends React.Component {
     submitHandler = (evt) =>{
         evt.preventDefault();
         let UserData = this.state.newUser;
-        // const URL = "https://172.20.20.107:8082/api/voucher/update/
         fetch(`http://172.20.20.107:8083/api/voucher-management-service/update/${this.props.id}`, {
             method: "PUT",
             body: JSON.stringify(UserData), 
@@ -99,7 +96,7 @@ class Details extends React.Component {
           >
             <Modal.Header>
               <Modal.Title id="example-modal-sizes-title-sm">
-                <h1>{this.props.code}</h1>
+                <h4>{this.props.code}</h4>
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>

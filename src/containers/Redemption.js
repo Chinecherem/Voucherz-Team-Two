@@ -1,9 +1,8 @@
 import React from 'react';
 import AppHeader from '../components/AppHeader';
-import CreateIcon from "./VoucherCreation/CreateIcon"
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import {Header} from 'semantic-ui-react'
-
+import Loading from './VoucherLoader';
 
 const style={
   header:{
@@ -30,14 +29,21 @@ const style={
   }
 class Redemption extends React.Component{
 
-      state={
-        newUser:{
-          Email: "",
-          VoucherCode: "",
-          Amount: ""
-        },
-        error: false
-      }
+        constructor(props){
+            super(props)
+            this.email = localStorage.getItem("email")
+            this.state={
+                newUser:{
+                  Email: this.email,
+                  VoucherCode: "",
+                  Amount: ""
+                },
+                error: false,
+                isLoading: false
+              }
+              this.token = localStorage.getItem("token")
+        }
+      
 
       stringChangeHandler =(e) => {
         const value= e.target.value;
@@ -115,50 +121,55 @@ class Redemption extends React.Component{
     formHandler = (e) =>{
       e.preventDefault()
       const UserData = this.state.newUser;
-      fetch(`http://172.20.20.127:7000/api/redemption/redeems`, {
-                    method: "POST",
-                    body: JSON.stringify(UserData),
-                    headers:{
-                        'Accept':  "application/json",
-                        'Content-Type': "application/json"
-                    },
-                }).then(res => res.json())
-                .then(response =>{
-                  console.log("Successful", response);
-                  // console.log(UserData)
-                })
-            //     this.setState({
-            //       newUser:{
-            //         Email: "",
-            //         VoucherCode: "",
-            //         Amount: ""
-            //       }
-            // })
-        }
+        // this.setState({isLoading: true})
+      fetch(`http://172.20.20.127:7000/api/redemption/redeems/${this.token}`, {
+        method: "POST",
+        body: JSON.stringify(UserData),
+        headers:{
+            'Accept':  "application/json",
+            'Content-Type': "application/json"
+        },
+    }).then(response =>{
+        console.log(response)
+        if(response.status === 200){
+            this.setState({isLoading: true, isError: false})
+            console.log(response.status)                    
+            console.log("Successfully Submitted")
+            this.props.history.push('/merchant/voucher')
+           }
+
+    }).then(body => console.log(body))
+    .catch(error =>{
+       console.error(error)
+        
+    } );
+    console.log(UserData)
+   
+            }
 
   render(){
+      const {isLoading} = this.state
     return(
       <div className='ordersContainer'>
       <AppHeader pageTitle='Redemption' />
       <div className='mainContainer'>
-          <CreateIcon />
+          {isLoading ? <Loading /> : null}
           <Header size="large" style={style.header}>Redeem your Voucher</Header>
           <Form onSubmit={this.formHandler} style={style.form}>
               <FormGroup>
                   <Label size='lg' style={style.Label}>Email</Label>
                   <Input type="email"
-                   placeholder="merchantemail@example.com" 
+                //    placeholder="merchantemail@example.com" 
                    bsSize="lg" 
                    name="Email" 
                    value={this.state.newUser.Email}
-                   onChange={this.stringChangeHandler} required/>
+                   onChange={this.stringChangeHandler} readOnly/>
               </FormGroup>
               <FormGroup>
                   <Label size="lg"  style={style.Label}>Voucher Code</Label>
                   <Input 
                   bsSize="lg" 
                   type="text" 
-                  placeholder="Tw2gfGhw" 
                   name="VoucherCode" 
                   value={this.state.newUser.VoucherCode}
                   onChange={this.codeHandler} required />
@@ -167,8 +178,7 @@ class Redemption extends React.Component{
                   <Label size="lg"  style={style.Label}>Amount</Label>
                   <Input 
                   type="text"
-                   bsSize="lg" 
-                   placeholder="2000"  
+                   bsSize="lg"  
                    name="Amount" 
                    value={this.state.newUser.Amount}
                    onChange={this.amountHandler} required/>
